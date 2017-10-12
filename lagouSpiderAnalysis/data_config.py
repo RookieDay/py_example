@@ -15,6 +15,6 @@ SPIDER_CONFIG = {
     'rowTitle': ['companyFullName','city','district','positionName',
                  'workYear','jobNature', 'salary','eduction','companySize',
                  'financeStage','industryField','positionAdvantage',
-                 'positionLabels','industryLabels','companyLabelList'
+                 'positionLables','industryLables','companyLableList','jobDetail'
                 ]
 }

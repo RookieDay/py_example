@@ -7,9 +7,12 @@
 # @Software: PyCharm Community Edition
 
 import data_config
-import csv,codecs,urllib,urllib2,json
+import csv,codecs,urllib,urllib2,json,sys,time
 import spider_class
 from parse_res_tools import parse_resdata
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 
 # 获取总页数
 def get_page_num(res_data):
@@ -35,7 +38,7 @@ if __name__ == '__main__':
 
     # 实例
     spider = spider_class.SpiderLaGou(position, city, district)
-    spider.write_line(output_file, row_title)
+    spider.write_line(output_file, row_title,'wb')
 
     # 参数
     position_format = urllib.quote(spider.position)
@@ -64,16 +67,17 @@ if __name__ == '__main__':
     print(url)
     # 获取response data 和 页数
     res_data = spider.spider_data(url, headers, formdata_pram)
-    print(res_data)
     result_message = parse_resdata(res_data,spider,output_file)
-
+    time.sleep(1)
     page_count = get_page_num(res_data)
 
-    # for i in range(2,page_count):
-    #     query_param = {
-    #         'first': 'true',
-    #         'pn': i,
-    #         'kd': spider.position
-    #     }
-    #     res_data = spider.spider_data(url, headers, query_param)
-    #     result_message += spider.parse_resdata(res_data,spider)
+    for i in range(2,page_count):
+        query_param = {
+            'first': 'true',
+            'pn': i,
+            'kd': spider.position
+        }
+        res_data = spider.spider_data(url, headers, query_param)
+        print(res_data)
+        result_message += parse_resdata(res_data,spider,output_file)
+        time.sleep(1)
