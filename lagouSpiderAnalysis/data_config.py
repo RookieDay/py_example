@@ -12,8 +12,9 @@ SPIDER_CONFIG = {
     'city': '',
     'district': '',
     'output_file' : 'lagou_analysis.csv',
-    'rowTitle': ['companyFullName','city','district','positionName','workYear','jobNature'
-                'salary','eduction','companySize','financeStage','industryField','positionAdvantage',
-                'positionLabels','industryLabels','companyLabelList'
+    'rowTitle': ['companyFullName','city','district','positionName',
+                 'workYear','jobNature', 'salary','eduction','companySize',
+                 'financeStage','industryField','positionAdvantage',
+                 'positionLabels','industryLabels','companyLabelList'
                 ]
 }
