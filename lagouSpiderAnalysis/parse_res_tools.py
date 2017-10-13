@@ -25,6 +25,7 @@ def get_job_description(positionId,spider):
         'User-Agent':'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
     }
     url = job_desc_url + str(positionId) + '.html'
+    # python3默认获取到的是16进制'bytes'类型数据 Unicode编码，如果如需可读输出则需decode解码成对应编码
     data_html = spider.spider_Getdata(url).decode('utf-8')
     if data_html:
         soup = BeautifulSoup(data_html,'lxml')
@@ -68,6 +69,5 @@ def parse_resdata(res_data,spider,output_file):
 
             spider.write_line(output_file,line_data,'ab')
             time.sleep(5)
-
     return count
 

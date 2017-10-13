@@ -7,12 +7,17 @@
 # @Software: PyCharm Community Edition
 
 import data_config
-import csv,codecs,urllib,urllib2,json,sys,time
+import urllib,json,sys,time,logging
 import spider_class
 from parse_res_tools import parse_resdata
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+logging.basicConfig(level=logging.DEBUG,
+                format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+                datefmt='%a, %d %b %Y %H:%M:%S',
+                filename='spiderLog.txt',
+                filemode='w')
 
 # 获取总页数
 def get_page_num(res_data):
@@ -25,7 +30,10 @@ def get_page_num(res_data):
             positionResult = content['positionResult']
             totalCount, resultSize = positionResult['totalCount'], positionResult['resultSize']
             if resultSize > 0:
+                print(totalCount)
+                print(resultSize)
                 page_num = totalCount / resultSize + 1
+                print("aa - " ,page_num)
     return  page_num
 
 if __name__ == '__main__':
@@ -67,10 +75,10 @@ if __name__ == '__main__':
     print(url)
     # 获取response data 和 页数
     res_data = spider.spider_data(url, headers, formdata_pram)
-    result_message = parse_resdata(res_data,spider,output_file)
+    result_num = parse_resdata(res_data,spider,output_file)
     time.sleep(1)
     page_count = get_page_num(res_data)
-
+    print(page_count)
     for i in range(2,page_count):
         query_param = {
             'first': 'true',
@@ -78,6 +86,9 @@ if __name__ == '__main__':
             'kd': spider.position
         }
         res_data = spider.spider_data(url, headers, query_param)
-        print(res_data)
-        result_message += parse_resdata(res_data,spider,output_file)
+        # print(res_data)
+        result_num += parse_resdata(res_data,spider,output_file)
+        print(result_num)
+        logging.debug('解析第' + str(i) + '页数据')
+        logging.debug('获取第' + str(result_num) + '条的数据')
         time.sleep(1)

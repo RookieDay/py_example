@@ -6,7 +6,7 @@
 # @File    : SpiderLaGou.py
 # @Software: PyCharm Community Edition
 
-import csv,codecs,urllib,urllib2
+import csv,codecs,urllib,urllib2,logging
 
 class SpiderLaGou(object):
     def __init__(self, position, city, district):
@@ -29,7 +29,10 @@ class SpiderLaGou(object):
         return  res_data
 
     def spider_Getdata(self, url):
-        req = urllib2.Request(url )
-        res = urllib2.urlopen(req)
-        res_data = res.read()
-        return  res_data
+        try:
+            req = urllib2.Request(url )
+            res = urllib2.urlopen(req)
+            res_data = res.read()
+            return res_data
+        except Exception, e:
+            logging.error(str(e) + '------' +url)
