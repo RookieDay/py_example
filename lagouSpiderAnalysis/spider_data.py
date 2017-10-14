@@ -90,5 +90,5 @@ if __name__ == '__main__':
         result_num += parse_resdata(res_data,spider,output_file)
         print(result_num)
         logging.debug('解析第' + str(i) + '页数据')
-        logging.debug('获取第' + str(result_num) + '条的数据')
+        logging.debug('已获取' + str(result_num) + '条的数据')
         time.sleep(1)
