@@ -32,6 +32,6 @@ class SpiderLaGou(object):
         req = urllib.request.Request(url)
         res = urllib.request.urlopen(req)
         res_data = res.read()
-        print(res_data)
+        # print(res_data)
         return res_data
 

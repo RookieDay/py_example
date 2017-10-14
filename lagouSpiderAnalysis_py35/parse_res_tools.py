@@ -27,7 +27,7 @@ def get_job_description(positionId,spider):
     url = job_desc_url + str(positionId) + '.html'
     # python3默认获取到的是16进制'bytes'类型数据 Unicode编码，如果如需可读输出则需decode解码成对应编码
     data_html = spider.spider_Getdata(url).decode('utf-8')
-    print(data_html)
+    # print(data_html)
     if data_html:
         soup = bs4.BeautifulSoup(data_html, 'lxml')
         job_desc = soup.find('dd',{'class':'job_bt'})
@@ -41,13 +41,13 @@ def get_job_description(positionId,spider):
 
 def parse_resdata(res_data,spider,output_file):
     count = 0
+    # 将 JSON 对象转换为 Python 字典
     data = json.loads(res_data)
-    # print(data)
+    print(data)
     if 'content' in data and 'positionResult' in data['content']\
             and 'result' in data['content']['positionResult']:
             results = data['content']['positionResult']['result']
             for result in results:
-
                 positionId = (result['positionId'] if 'positionId' in result else '')
                 job_detailMsg = get_job_description(positionId, spider)
                 count += 1
@@ -72,5 +72,6 @@ def parse_resdata(res_data,spider,output_file):
 
             spider.write_line(output_file,line_data,'a')
             time.sleep(5)
+    print(count)
     return count
 
