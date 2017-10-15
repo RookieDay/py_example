@@ -39,7 +39,10 @@ def get_job_description(positionId,spider):
 
 def parse_resdata(res_data,spider,output_file):
     count = 0
-    data = json.loads(res_data)
+    print(res_data)
+    data = json.loads(res_data,object_hook=byteify)
+    # data = yaml.safe_load(res_data)
+    print(data)
     if data.has_key('content') and data['content'].has_key('positionResult') \
             and data['content']['positionResult'].has_key('result'):
             results = data['content']['positionResult']['result']
@@ -71,3 +74,13 @@ def parse_resdata(res_data,spider,output_file):
             time.sleep(5)
     return count
 
+def byteify(input):
+    if isinstance(input, dict):
+        return {byteify(key): byteify(value)
+                for key, value in input.iteritems()}
+    elif isinstance(input, list):
+        return [byteify(element) for element in input]
+    elif isinstance(input, unicode):
+        return input.encode('utf-8')
+    else:
+        return input

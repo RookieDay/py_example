@@ -70,7 +70,7 @@ def parse_resdata(res_data,spider,output_file):
             line_data = [companyFullName,city,district,positionName,workYear,jobNature, salary,eduction,companySize,
                  financeStage,industryField,positionAdvantage,positionLables,industryLables,companyLableList,str(job_detailMsg)]
 
-            spider.write_line(output_file,line_data,'a')
+            spider.write_line(output_file,line_data,'a+')
             time.sleep(5)
     print(count)
     return count
