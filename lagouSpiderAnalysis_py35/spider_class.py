@@ -6,7 +6,7 @@
 # @File    : SpiderLaGou.py
 # @Software: PyCharm Community Edition
 
-import csv,codecs,urllib.parse,urllib.request
+import csv,urllib.parse,urllib.request
 
 class SpiderLaGou(object):
     def __init__(self, position, city, district):
@@ -16,9 +16,10 @@ class SpiderLaGou(object):
         self.district = district
 
     def write_line(self, output_file, row_title,model):
-        with open(output_file,model,newline='') as csvFile:
+        with open(output_file, model, newline='') as csvFile:
             # csvFile.write(codecs.BOM_UTF8)     # 防止乱码
             writer = csv.writer(csvFile)
+            print('aa--', row_title)
             writer.writerow(row_title)   #写入一行
 
     def spider_data(self, url, headers, formdata_pram):
@@ -28,11 +29,10 @@ class SpiderLaGou(object):
         res_data = res.read()
         return res_data
 
-    def spider_Getdata(self, url):
+    def spider_Getdata(self, url, headers):
         print(url)
-        req = urllib.request.Request(url)
+        req = urllib.request.Request(url, headers=headers)
         res = urllib.request.urlopen(req)
         res_data = res.read()
-        print(res_data.decode('utf-8'))
         return res_data
 

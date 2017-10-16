@@ -20,9 +20,11 @@ def get_job_description(positionId):
         'Upgrade-Insecure-Requests':1,
         'User-Agent':'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
     }
+    user_agent= 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
+    headers = {'User-Agent':user_agent}
     url = job_desc_url + str(positionId) + '.html'
     # python3默认获取到的是16进制'bytes'类型数据 Unicode编码，如果如需可读输出则需decode解码成对应编码
-    req = urllib.request.Request(url)
+    req = urllib.request.Request(url,headers=headers)
     res = urllib.request.urlopen(req)
     data_html = res.read().decode('utf-8')
     print(data_html)

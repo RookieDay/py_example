@@ -22,9 +22,11 @@ def get_job_description(positionId,spider):
         'Upgrade-Insecure-Requests':1,
         'User-Agent':'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
     }
+    user_agent= 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
+    headers = {'User-Agent':user_agent}
     url = job_desc_url + str(positionId) + '.html'
     # python3默认获取到的是16进制'bytes'类型数据 Unicode编码，如果如需可读输出则需decode解码成对应编码
-    data_html = spider.spider_Getdata(url).decode('utf-8')
+    data_html = spider.spider_Getdata(url,headers).decode('utf-8')
     if data_html:
         soup = bs4.BeautifulSoup(data_html, 'lxml')
         job_desc = soup.find('dd',{'class':'job_bt'})
@@ -34,21 +36,19 @@ def get_job_description(positionId,spider):
                 if detail.string:
                     desc += str(detail.string) + '\t'
         time.sleep(2)
-    return desc
+    print(desc)
+    return desc.replace(u'\xa0',u'')
 
 def parse_resdata(res_data,spider,output_file):
     count = 0
     # 将 JSON 对象转换为 Python 字典
-    print(res_data)
     data = json.loads(res_data)
-    print(data)
     if 'content' in data and 'positionResult' in data['content']\
             and 'result' in data['content']['positionResult']:
             results = data['content']['positionResult']['result']
             for result in results:
                 positionId = (result['positionId'] if 'positionId' in result else '')
                 job_detailMsg = get_job_description(positionId, spider)
-                time.sleep(5)
                 count += 1
                 companyFullName = (result['companyFullName'] if 'companyFullName' in result and result['companyFullName'] else '')
                 # print(count , '----',companyFullName)
@@ -69,7 +69,6 @@ def parse_resdata(res_data,spider,output_file):
 
                 line_data = [companyFullName,city,district,positionName,workYear,jobNature, salary,eduction,companySize,
                      financeStage,industryField,positionAdvantage,positionLables,industryLables,companyLableList,str(job_detailMsg)]
-                # print('out---',line_data)
                 spider.write_line(output_file,line_data,'a+')
     time.sleep(5)
     print(count)

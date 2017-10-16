@@ -6,14 +6,9 @@
 # @File    : spider_data.py
 # @Software: PyCharm Community Edition
 
-# from data_config import data_config
 from lagouSpiderAnalysis_py35 import *
 import urllib,json,time,logging
 import urllib.parse,urllib.request
-# from spider_class import spider_class
-# from parse_res_tools import parse_resdata
-# reload(sys)
-# sys.setdefaultencoding('utf-8')
 
 logging.basicConfig(level=logging.DEBUG,
                 format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
