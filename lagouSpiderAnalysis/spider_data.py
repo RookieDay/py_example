@@ -21,7 +21,7 @@ logging.basicConfig(level=logging.DEBUG,
 
 # 获取总页数
 def get_page_num(res_data):
-    data = json.loads(res_data,object_hook=byteify)
+    data = json.loads(res_data)
     page_num = 0
     if data.has_key('content'):
         content = data['content']

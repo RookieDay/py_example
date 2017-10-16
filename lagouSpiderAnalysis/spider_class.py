@@ -6,7 +6,9 @@
 # @File    : SpiderLaGou.py
 # @Software: PyCharm Community Edition
 
-import csv,codecs,urllib,urllib2,logging
+import csv,codecs,urllib,urllib2,logging,sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 class SpiderLaGou(object):
     def __init__(self, position, city, district):

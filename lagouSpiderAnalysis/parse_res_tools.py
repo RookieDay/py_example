@@ -40,38 +40,43 @@ def get_job_description(positionId,spider):
 def parse_resdata(res_data,spider,output_file):
     count = 0
     print(res_data)
-    data = json.loads(res_data,object_hook=byteify)
-    # data = yaml.safe_load(res_data)
+    data = json.loads(res_data)
+
     print(data)
-    if data.has_key('content') and data['content'].has_key('positionResult') \
-            and data['content']['positionResult'].has_key('result'):
+    # data = yaml.safe_load(res_data)
+    if 'content' in data and 'positionResult' in data['content']\
+            and 'result' in data['content']['positionResult']:
             results = data['content']['positionResult']['result']
             for result in results:
-
+                line_data = ''
                 positionId = (result['positionId'] if 'positionId' in result else '')
+
                 job_detailMsg = get_job_description(positionId,spider)
                 count += 1
-                companyFullName = (result['companyFullName'] if result.has_key('companyFullName') and result['companyFullName'] else '')
-                city = (result['city'] if result.has_key('city') and result['city'] else '')
-                district = (result['district'] if result.has_key('district') and result['district'] else '')
-                positionName = (result['positionName'] if result.has_key('positionName') and result['positionName'] else '')
-                workYear = (result['workYear'] if result.has_key('workYear') and result['workYear'] else '')
-                jobNature = (result['jobNature'] if result.has_key('jobNature') and result['jobNature'] else '')
-                salary = (result['salary'] if result.has_key('salary') and result['salary'] else '')
-                eduction = (result['eduction'] if result.has_key('eduction') and result['eduction'] else '')
-                companySize = (result['companySize'] if result.has_key('companySize') and result['companySize'] else '')
-                financeStage = (result['financeStage'] if result.has_key('financeStage') and result['financeStage'] else '')
-                industryField = (result['industryField'] if result.has_key('industryField') and result['industryField'] else '')
-                positionAdvantage = (result['positionAdvantage'] if result.has_key('positionAdvantage') and result['positionAdvantage'] else '')
-                positionLables = (','.join(result['positionLables']) if result.has_key('positionLables') and result['positionLables'] else '')
-                industryLables = (','.join(result['industryLables']) if result.has_key('industryLables') and result['industryLables'] else '')
-                companyLableList = (','.join(result['companyLabelList']) if result.has_key('companyLabelList') and result['companyLabelList'] else '')
+                # print(count, '--',result)
+                companyFullName = (result['companyFullName'] if 'companyFullName' in result and result['companyFullName'] else '')
+                print('test',companyFullName.encode("gbk","ignore").decode("gbk"))
+                print(type(companyFullName))
+                city = (result['city'] if 'city' in result and result['city'] else '')
+                district = (result['district'] if 'district' in result and result['district'] else '')
+                positionName = (result['positionName'] if 'positionName' in result  and result['positionName'] else '')
+                workYear = (result['workYear'] if 'workYear' in result and result['workYear'] else '')
+                jobNature = (result['jobNature'] if 'jobNature' in result and result['jobNature'] else '')
+                salary = (result['salary'] if 'salary' in result and result['salary'] else '')
+                eduction = (result['eduction'] if 'eduction' in result and result['eduction'] else '')
+                companySize = (result['companySize'] if 'companySize' in result and result['companySize'] else '')
+                financeStage = (result['financeStage'] if 'financeStage' in result and result['financeStage'] else '')
+                industryField = (result['industryField'] if 'industryField' in result and result['industryField'] else '')
+                positionAdvantage = (result['positionAdvantage'] if 'positionAdvantage' in result and result['positionAdvantage'] else '')
+                positionLables = (','.join(result['positionLables']) if 'positionLables' in result and result['positionLables'] else '')
+                industryLables = (','.join(result['industryLables']) if 'industryLables' in result and result['industryLables'] else '')
+                companyLableList = (','.join(result['companyLabelList']) if 'companyLabelList' in result and result['companyLabelList'] else '')
 
-            line_data = [companyFullName,city,district,positionName,workYear,jobNature, salary,eduction,companySize,
-                 financeStage,industryField,positionAdvantage,positionLables,industryLables,companyLableList,str(job_detailMsg)]
-
-            spider.write_line(output_file,line_data,'ab')
-            time.sleep(5)
+                line_data = [companyFullName,city,district,positionName,workYear,jobNature, salary,eduction,companySize,
+                     financeStage,industryField,positionAdvantage,positionLables,industryLables,companyLableList,str(job_detailMsg)]
+                print(line_data)
+                spider.write_line(output_file,line_data,'ab')
+    time.sleep(5)
     return count
 
 def byteify(input):

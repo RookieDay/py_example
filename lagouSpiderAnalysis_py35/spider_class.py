@@ -29,9 +29,10 @@ class SpiderLaGou(object):
         return res_data
 
     def spider_Getdata(self, url):
+        print(url)
         req = urllib.request.Request(url)
         res = urllib.request.urlopen(req)
         res_data = res.read()
-        # print(res_data)
+        print(res_data.decode('utf-8'))
         return res_data
 
