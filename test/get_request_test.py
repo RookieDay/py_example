@@ -24,7 +24,7 @@ def get_job_description(positionId):
     headers = {'User-Agent':user_agent}
     url = job_desc_url + str(positionId) + '.html'
     # python3默认获取到的是16进制'bytes'类型数据 Unicode编码，如果如需可读输出则需decode解码成对应编码
-    req = urllib.request.Request(url,headers=headers)
+    req = urllib.request.Request(url,headers=job_desc_headers)
     res = urllib.request.urlopen(req)
     data_html = res.read().decode('utf-8')
     print(data_html)

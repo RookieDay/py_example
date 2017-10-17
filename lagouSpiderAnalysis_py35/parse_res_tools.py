@@ -26,7 +26,7 @@ def get_job_description(positionId,spider):
     headers = {'User-Agent':user_agent}
     url = job_desc_url + str(positionId) + '.html'
     # python3默认获取到的是16进制'bytes'类型数据 Unicode编码，如果如需可读输出则需decode解码成对应编码
-    data_html = spider.spider_Getdata(url,headers).decode('utf-8')
+    data_html = spider.spider_Getdata(url,job_desc_headers).decode('utf-8')
     if data_html:
         soup = bs4.BeautifulSoup(data_html, 'lxml')
         job_desc = soup.find('dd',{'class':'job_bt'})
@@ -37,7 +37,7 @@ def get_job_description(positionId,spider):
                     desc += str(detail.string) + '\t'
         time.sleep(2)
     print(desc)
-    return desc.replace(u'\xa0',u'')
+    return desc.encode('utf-8')
 
 def parse_resdata(res_data,spider,output_file):
     count = 0
@@ -50,8 +50,8 @@ def parse_resdata(res_data,spider,output_file):
                 positionId = (result['positionId'] if 'positionId' in result else '')
                 job_detailMsg = get_job_description(positionId, spider)
                 count += 1
+                print(count)
                 companyFullName = (result['companyFullName'] if 'companyFullName' in result and result['companyFullName'] else '')
-                # print(count , '----',companyFullName)
                 city = (result['city'] if 'city' in result and result['city'] else '')
                 district = (result['district'] if 'district' in result and result['district'] else '')
                 positionName = (result['positionName'] if 'positionName' in result  and result['positionName'] else '')
@@ -71,6 +71,6 @@ def parse_resdata(res_data,spider,output_file):
                      financeStage,industryField,positionAdvantage,positionLables,industryLables,companyLableList,str(job_detailMsg)]
                 spider.write_line(output_file,line_data,'a+')
     time.sleep(5)
-    print(count)
+    # print(count)
     return count
 

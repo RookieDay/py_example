@@ -81,7 +81,7 @@ if __name__ == '__main__':
         res_data = spider.spider_data(url, headers, query_param).decode('utf-8')
         # print(res_data)
         result_num += parse_res_tools.parse_resdata(res_data,spider,output_file)
-        print(result_num)
+        # print(result_num)
         logging.debug('解析第' + str(i) + '页数据')
         logging.debug('已获取' + str(result_num) + '条的数据')
         time.sleep(2)

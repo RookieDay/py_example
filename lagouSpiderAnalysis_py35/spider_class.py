@@ -19,7 +19,6 @@ class SpiderLaGou(object):
         with open(output_file, model, newline='') as csvFile:
             # csvFile.write(codecs.BOM_UTF8)     # 防止乱码
             writer = csv.writer(csvFile)
-            print('aa--', row_title)
             writer.writerow(row_title)   #写入一行
 
     def spider_data(self, url, headers, formdata_pram):
@@ -30,7 +29,7 @@ class SpiderLaGou(object):
         return res_data
 
     def spider_Getdata(self, url, headers):
-        print(url)
+        # print(url)
         req = urllib.request.Request(url, headers=headers)
         res = urllib.request.urlopen(req)
         res_data = res.read()
