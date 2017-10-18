@@ -27,7 +27,7 @@ def get_page_num(res_data):
             totalCount, resultSize = positionResult['totalCount'], positionResult['resultSize']
             if resultSize > 0:
                 page_num = int(totalCount / resultSize) + 1
-    return  page_num
+    return page_num
 
 if __name__ == '__main__':
     # 获取常量

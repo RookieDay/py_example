@@ -32,11 +32,13 @@ def get_job_description(positionId,spider):
         job_desc = soup.find('dd',{'class':'job_bt'})
         if job_desc:
             desc_details = job_desc.findAll('p')
+            print(desc_details)
             for detail in desc_details:
                 if detail.string:
                     desc += str(detail.string) + '\t'
         time.sleep(2)
-    print(desc)
+    print(url)
+    # print(desc)
     return desc.encode('utf-8')
 
 def parse_resdata(res_data,spider,output_file):

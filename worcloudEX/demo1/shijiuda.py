@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2017/10/15 15:38
 # @Author  : RookieDay
-# @Site    : 
+# @Site    :
 # @File    : minEX.py
 # @Software: PyCharm Community Edition
 # wordcloud 作用如其名。本例核心模块，它把我们带权重的关键词渲染成词云
@@ -12,10 +12,15 @@
 # jieba 牛逼的分词模块，因为我是从一个txt文本里提取关键词，所以需要 jieba 来分词并统计词频。如果是已经有了现成的数据，不再需要它
 import matplotlib.pyplot as plt
 import jieba.analyse
-import numpy
+import  random
+import numpy as np
 from os import path
 from PIL import Image
 from wordcloud import WordCloud, ImageColorGenerator
+
+def grey_color_func(word, font_size, position, orientation, random_state=None,
+                    **kwargs):
+    return "hsl(0, 0%%, %d%%)" % random.randint(60, 100)
 
 def readTxt(file):
     """
@@ -32,7 +37,7 @@ def textDict(content):
     :param content:
     :return:
     """
-    result = jieba.analyse.textrank(content, topK=1000, withWeight=True)
+    result = jieba.analyse.textrank(content, topK=500, withWeight=True)
     # 转化为比重字典
     keywords = dict()
     for i in result:
@@ -43,7 +48,7 @@ def renderWordCloud(keywords, sourceImg):
     # 获取图片资源
     image = Image.open(sourceImg)
     # 转为像素矩阵
-    graph = numpy.array(image)
+    graph = np.array(image)
 
     # wordcloud 默认字体库不支持中文，这里自己选取中文字体
     fontPath = 'C:/Windows/Fonts/SIMLI.TTF'
@@ -51,7 +56,7 @@ def renderWordCloud(keywords, sourceImg):
     wc = WordCloud(
         font_path=fontPath,
         background_color='white',
-        max_words=1000,
+        max_words=500,
         # 使用的词云模板背景
         mask=graph
     )
@@ -59,10 +64,22 @@ def renderWordCloud(keywords, sourceImg):
     wc.generate_from_frequencies(keywords)
     # 读取模板图片的颜色
     image_color = ImageColorGenerator(graph)
-    # 生成词云图
-    plt.imshow(wc)
-    # 用模板图片的颜色覆盖
+
+    # 生成词云图 多色
+    plt.imshow(wc,interpolation='bilinear')
+    plt.axis('off')
+    plt.figure()
+    # 用模板图片的颜色 覆盖
     plt.imshow(wc.recolor(color_func=image_color))
+    plt.axis('off')
+    plt.figure()
+    # 用自定义颜色 覆盖
+    plt.imshow(wc.recolor(color_func=grey_color_func, random_state=3),
+           interpolation="bilinear")
+    plt.axis('off')
+    plt.figure()
+    # 原始的
+    plt.imshow(graph, cmap=plt.cm.gray, interpolation='bilinear')
     # 关闭图像坐标系
     plt.axis('off')
     # 显示图片--在窗口显示
