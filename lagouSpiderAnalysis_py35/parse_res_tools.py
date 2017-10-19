@@ -56,7 +56,7 @@ def parse_resdata(res_data,spider,output_file):
                 companyFullName = (result['companyFullName'] if 'companyFullName' in result and result['companyFullName'] else '')
                 city = (result['city'] if 'city' in result and result['city'] else '')
                 district = (result['district'] if 'district' in result and result['district'] else '')
-                positionName = (result['positionName'] if 'positionName' in result  and result['positionName'] else '')
+                positionName = (result['positionName'].encode('utf-8') if 'positionName' in result  and result['positionName'] else '')
                 workYear = (result['workYear'] if 'workYear' in result and result['workYear'] else '')
                 jobNature = (result['jobNature'] if 'jobNature' in result and result['jobNature'] else '')
                 salary = (result['salary'] if 'salary' in result and result['salary'] else '')
