@@ -21,7 +21,7 @@ class Random_code(Base):
     id = Column(Integer, Sequence('id'),primary_key=True)
     code = Column(String(200))
 
-# 初始化数据库链接
+# 初始化数据库链接 建立数据库引擎
 engine = create_engine('mysql+mysqlconnector://root:123456@localhost:3306/test')
 # 创建DBSession类型
 DBSession = sessionmaker(bind=engine)

@@ -14,7 +14,7 @@ from sqlalchemy.ext.declarative import declarative_base
 # 创建对象基类
 Base = declarative_base()
 
-# 定义USER对象
+# 定义USER对象  创建一个与数据库中的users表匹配的python类
 class User(Base):
     # 表的名字
     __tablename__ = 'user'
@@ -23,8 +23,11 @@ class User(Base):
     name = Column(String(20))
 
 # 初始化数据库链接
+# mysql_engine = create_engine("$address", echo, module)
+#address 数据库://用户名:密码（没有密码则为空）@主机名：端口/数据库名
+# echo标识用于设置通过python标准日志模块完成的SQLAlchemy日志系统，当开启日志功能，我们将能看到所有的SQL生成代码
 engine = create_engine('mysql+mysqlconnector://root:123456@localhost:3306/test')
-# 创建DBSession类型
+# 创建DBSession类型 后台数据库的具体实现交由session完成
 DBSession = sessionmaker(bind=engine)
 
 # 关键是获取session，然后把对象添加到session，最后提交并关闭。DBSession对象可视为当前数据库连接。
