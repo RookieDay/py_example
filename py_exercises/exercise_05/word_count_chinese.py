@@ -15,12 +15,32 @@ import numpy
 from os import path
 from PIL import Image
 from wordcloud import WordCloud, ImageColorGenerator
-
+from collections import Counter
+import jieba, csv
 
 def read_file(file):
     with open(file,'rb') as f:
         txt = f.read()
     return txt
+
+def count_to_txt(content, out_file):
+    word_lists = []
+    word_dict = dict(Counter(jieba.lcut(content)))
+    print(word_dict)
+    with open(out_file,'w',encoding='utf-8') as f:
+        for k, v in word_dict.items():
+            f.write(k + '   ' + str(v) + '\n')
+
+def count_to_csv(content, out_csv):
+    word_lists = []
+    print(type(content))
+    word_dict = dict(Counter(jieba.lcut(content)))
+    print(word_dict)
+    with open(out_csv,'w',newline='',encoding='utf_8_sig') as data_csv:
+        writer = csv.writer(data_csv)
+        writer.writerow(['word','count'])
+        for k, v in word_dict.items():
+            writer.writerow([k,str(v)])
 
 def txtDict(content):
     result = jieba.analyse.textrank(content, topK=1000, withWeight=True)
@@ -59,9 +79,15 @@ def render_word(keywords, src_image):
 
 if __name__ == '__main__':
     txt_file = path.join(path.dirname(__file__),'shijiuda.txt')
+    out_file = path.join(path.dirname(__file__),'word_count_chinese.txt')
+    out_csv = path.join(path.dirname(__file__),'word_count_chinese.csv')
     src_image = path.join(path.dirname(__file__),'huge.jpg')
 
     # 获取文本文件内容
     content = read_file(txt_file)
+    # 写入txt
+    count_to_txt(content,out_file)
+    # 写入csv
+    count_to_csv(content,out_csv)
     keywords = txtDict(content)
     render_word(keywords, src_image)

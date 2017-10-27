@@ -14,20 +14,39 @@ import numpy
 from os import path
 from PIL import Image
 from wordcloud import WordCloud, STOPWORDS
-import Collections
+from collections import Counter
+import csv,re
 
 def read_file(file):
     with open(file) as f:
         txt = f.read()
     return txt
 
-def count_to_file(content):
+def count_to_txt(content, out_file):
     word_lists = []
-    word_lists.append([word.strip('.?!,()`') for word in content.lower().split()])
-    c = Counter()
+    # match = re.findall(r'[^a-zA-Z0-9]+',content)
+    # for i in match:
+    #     content = content.replace(i, ' ')
+    # content = content.replace(r'[^a-zA-Z0-9]+',' ')
+    content, number = re.subn(r'[^a-zA-Z0-9]+', ' ' , content)
+    word_lists.extend([word for word in content.lower().split()])
     word_dict = dict(Counter(word_lists))
-    for k, v in word_dict.items():
-        print(k, v)
+    with open(out_file,'w') as f:
+        for k, v in word_dict.items():
+            f.write(k + '   ' + str(v) + '\n')
+
+def count_to_csv(content,out_csv):
+    word_lists = []
+    match = re.findall(r'[^a-zA-Z0-9]+',content)
+    for i in match:
+        content = content.replace(i, ' ')
+    word_lists.extend([word for word in content.lower().split()])
+    word_dict = dict(Counter(word_lists))
+    with open(out_csv,'w',newline='') as data_csv:
+        writer = csv.writer(data_csv)
+        writer.writerow(['word','count'])
+        for k, v in word_dict.items():
+            writer.writerow([k,str(v)])
 
 def render_word(content, src_image):
     img = Image.open(src_image)
@@ -47,10 +66,15 @@ def render_word(content, src_image):
     wc.to_file(path.join(path.dirname(__file__),'huge_count_english.jpg'))
 
 if __name__ == '__main__':
-    txt_file = path.join(path.dirname(__file__),'ana.txt')
+    txt_file = path.join(path.dirname(__file__),'alice.txt')
+    out_file = path.join(path.dirname(__file__),'word_count_english.txt')
+    out_csv = path.join(path.dirname(__file__),'word_count_english.csv')
     src_image = path.join(path.dirname(__file__),'huge.jpg')
 
     # 获取文本文件内容
     content = read_file(txt_file)
-    count_to_file(content)
+    # 写入txt
+    count_to_txt(content, out_file)
+    # 写入csv
+    count_to_csv(content, out_csv)
     render_word(content, src_image)
