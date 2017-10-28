@@ -9,6 +9,8 @@
 # 统计单词出现次数 并且输出到excel or csv
 # 词云图
 
+# 中文词频统计尚有许多bug 后期修正 未使用jieba.load_userdict(file_name)
+
 import matplotlib.pyplot as plt
 import jieba.analyse
 import numpy
@@ -24,9 +26,8 @@ def read_file(file):
     return txt
 
 def count_to_txt(content, out_file):
-    word_lists = []
     word_dict = dict(Counter(jieba.lcut(content)))
-    print(word_dict)
+    # print(word_dict)
     with open(out_file,'w',encoding='utf-8') as f:
         for k, v in word_dict.items():
             f.write(k + '   ' + str(v) + '\n')
