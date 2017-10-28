@@ -18,7 +18,7 @@
 # 4. jieba.cut 以及 jieba.cut_for_search 返回的结构都是一个可迭代的 generator，可以使用 for 循环来获得分词后得到的每一个词语(unicode)，或者用
 # 5. jieba.lcut 以及 jieba.lcut_for_search 直接返回 list
 # 6. jieba.Tokenizer(dictionary=DEFAULT_DICT) 新建自定义分词器，可用于同时使用不同词典。jieba.dt 为默认分词器，所有全局分词相关函数都是该分词器的映射。
-import jieba.analyse
+import re
 import jieba.posseg as pseg
 import jieba
 seg_list = jieba.cut("我来到北京清华大学", cut_all=True)
@@ -104,3 +104,54 @@ for tk in result:
 result = jieba.tokenize(u'永和服装饰品有限公司', mode='search')
 for tk in result:
     print("word %s\t\t start: %d \t\t end:%d" % (tk[0],tk[1],tk[2]))
+
+# \d可以匹配一个数字
+# \w可以匹配一个字母或数字
+# *表示任意个字符（包括0个）
+# 用+表示至少一个字符
+# 用?表示0个或1个字符
+# 用{n}表示n个字符
+# 用{n,m}表示n-m个字符
+# [0-9a-zA-Z\_]可以匹配一个数字、字母或者下划线；
+# [0-9a-zA-Z\_]+可以匹配至少由一个数字、字母或者下划线组成的字符串，比如'a100'，'0_Z'，'Py3000'等等；
+# [a-zA-Z\_][0-9a-zA-Z\_]*可以匹配由字母或下划线开头，后接任意个由一个数字、字母或者下划线组成的字符串，也就是Python合法的变量；
+# [a-zA-Z\_][0-9a-zA-Z\_]{0, 19}更精确地限制了变量的长度是1-20个字符（前面1个字符+后面最多19个字符）。
+# A|B可以匹配A或B
+# ^表示行的开头，^\d表示必须以数字开头。
+# $表示行的结束，\d$表示必须以数字结束。
+# Python的r前缀，就不用考虑转义的问题
+# ()表示的就是要提取的分组
+# group(0)永远是原始字符串，group(1)、group(2)……表示第1、2、……个子串
+m = re.match(r'^(\d{3})-(\d{3,8})$', '010-12345')
+print(m)
+print(m.groups())
+print(m.group(0))
+print(m.group(1))
+print(m.group(2))
+# 正则匹配默认是贪婪匹配，也就是匹配尽可能多的字符
+print(re.match(r'^(\d+)(0*)$', '102300').groups())
+# 由于\d+采用贪婪匹配，直接把后面的0全部匹配了，结果0*只能匹配空字符串了
+# 必须让\d+采用非贪婪匹配（也就是尽可能少匹配），才能把后面的0匹配出来，加个?就可以让\d+采用非贪婪匹配
+print(re.match(r'^(\d+?)(0*)$', '102300').groups())
+
+# 当我们在Python中使用正则表达式时，re模块内部会干两件事情：
+# 编译正则表达式，如果正则表达式的字符串本身不合法，会报错；
+# 用编译后的正则表达式去匹配字符串。
+# 如果一个正则表达式要重复使用几千次，出于效率的考虑，我们可以预编译该正则表达式，接下来重复使用时就不需要编译这个步骤了，直接匹配：
+re_telephone = re.compile(r'^(\d{3})-(\d{3,8})$')
+print(re_telephone.match('010-12345').groups())
+print(re_telephone.match('010-8086').groups())
+
+# 1.替换所有匹配的子串用newstring替换subject中所有与正则表达式regex匹配的子串/
+# result, number = re.subn(regex, newstring, subject)
+
+# 2.替换所有匹配的子串（使 用正则表达式对象）
+# rereobj = re.compile(regex)
+# result, number = reobj.subn(newstring, subject)字符串拆分
+
+# 3.Python字符串拆分
+# reresult = re.split(regex, subject)
+
+# 4.字符串拆分（使用正则表示式对象）
+# rereobj = re.compile(regex)
+# result = reobj.split(subject)匹配
