@@ -72,6 +72,7 @@ if __name__ == '__main__':
     src_image = path.join(path.dirname(__file__),'huge.jpg')
 
     # 获取文本文件内容
+    print(txt_file)
     content = read_file(txt_file)
     # 写入txt
     count_to_txt(content, out_file)
