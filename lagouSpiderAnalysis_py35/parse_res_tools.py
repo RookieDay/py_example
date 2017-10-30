@@ -6,6 +6,8 @@
 # @File    : parse_res_tools.py
 # @Software: PyCharm Community Edition
 
+# 随便使用拉钩上的一个网页进行解析
+# 这里使用 https://www.lagou.com/jobs/3597875.html
 import bs4
 import json,time
 
