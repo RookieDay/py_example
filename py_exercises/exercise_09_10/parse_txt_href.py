@@ -41,7 +41,11 @@ def post_form_data(page_num, num_entries = 2):
 def parse_content_txt(html_content):
     if html_content:
         soup = bs4.BeautifulSoup(html_content,'lxml')
-        print('\n'.join(soup.get_text().split()))
+        # extract() 方法将当前tag移除文档树, 并作为方法结果返回:
+        # 删除里面的script标签
+        [sp.extract() for sp in soup('script')]
+        print(' '.join(soup.get_text().split()))
+        # print(soup.get_text())
         for link in soup.find_all(name='a',attrs={'href':re.compile(r'^http')}):
             print(link.get('href'))
 
