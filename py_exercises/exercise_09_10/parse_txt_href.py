@@ -9,7 +9,7 @@ import urllib.parse,urllib.request
 import bs4, re
 
 page_num = 1
-def post_form_data(page_num, num_entries = 2):
+def get_form_data(page_num, num_entries = 2):
     desc = ''
     job_desc_url = 'https://www.lagou.com/jobs/'
     job_desc_headers = {
@@ -35,7 +35,7 @@ def post_form_data(page_num, num_entries = 2):
         html = None
         if num_entries > 0:
             if hasattr(e,'code') and 500 <= e.code < 600:
-                return post_form_data(url,num_entries-1)
+                return get_form_data(url,num_entries-1)
     return res_data
 
 def parse_content_txt(html_content):
@@ -50,5 +50,5 @@ def parse_content_txt(html_content):
             print(link.get('href'))
 
 if __name__ == '__main__':
-    html_content = post_form_data(page_num,3)
+    html_content = get_form_data(page_num,3)
     parse_content_txt(html_content)
