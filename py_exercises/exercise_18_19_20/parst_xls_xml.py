@@ -1,0 +1,41 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# @Time    : 2017/11/2
+# @Author  : RookieDay
+# @Site    : 
+# @File    : parst_xls_xml
+# @Software: PyCharm Community Edition
+import os
+import xlrd
+
+xls_path = os.path.join(os.path.dirname(__file__),'student.xls')
+
+def get_xls_content(xls_path,xls_name):
+    xls_open = xlrd.open_workbook(xls_name+'.xls')
+    xls_sheet = xls_open.sheet_by_name(xls_name)
+    # xls_sheet  = xls_open.sheet_by_index(0) # 获取第一个sheet
+    print(xls_sheet.nrows)
+    xls_data = {}
+
+    # for i in range(xls_sheet.nrows):
+    #     xls_data[i+1] = xls_sheet.row_values(i)[1:]
+    # return xls_data
+
+
+    for i in range(xls_sheet.nrows):
+        xls_row = xls_sheet.row(i)
+        col_data = []
+        for j in range(xls_sheet.ncols):
+            col_data.append(xls_sheet.cell_value(i,j))
+        xls_data[i+1] = col_data
+    return xls_data
+
+def insert_to_xml(xls_data,xls_name):
+    print()
+
+
+if __name__ == '__main__':
+    xls_name = os.path.basename(xls_path).split('.')[0]
+    xls_data = get_xls_content(xls_path,xls_name)
+    print(xls_data)
+    insert_to_xml(xls_data,xls_name)
