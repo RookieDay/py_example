@@ -31,6 +31,7 @@ def process_img(src_path):
         for file in files:
             img, postfix = os.path.splitext(file)
             if(re_img.match(postfix.lower())):
+                print(fpath)
                 img_path = os.path.join(fpath,file)
                 out_file = os.path.join(out_root,'iPhone_' + file)
                 resize_img(img_path,out_file)
