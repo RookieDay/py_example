@@ -10,7 +10,7 @@ from PIL import Image
 
 iPhone_W = 640
 iPhone_H = 1136
-out_root = './image_out_01'
+out_root = os.path.join(os.path.dirname(__file__),'image_out_01')
 re_img = re.compile(r'(.jpg|.png|.jpeg|.bmp)$')
 
 def resize_img(src_path, out_file):
@@ -26,10 +26,15 @@ def resize_img(src_path, out_file):
     img_resize = im.resize((w,h),Image.ANTIALIAS)
     img_resize.save(out_file)
 
-for fpath, dirs, files in os.walk('./image'):
-    for file in files:
-        img, postfix = os.path.splitext(file)
-        if(re_img.match(postfix.lower())):
-            img_path = os.path.join(fpath,file)
-            out_file = os.path.join(out_root,'iPhone_' + file)
-            resize_img(img_path,out_file)
+def process_img(src_path):
+    for fpath, dirs, files in os.walk(src_path):
+        for file in files:
+            img, postfix = os.path.splitext(file)
+            if(re_img.match(postfix.lower())):
+                img_path = os.path.join(fpath,file)
+                out_file = os.path.join(out_root,'iPhone_' + file)
+                resize_img(img_path,out_file)
+
+if __name__ == '__main__':
+    src_path = os.path.join(os.path.dirname(__file__),'image')
+    process_img(src_path)

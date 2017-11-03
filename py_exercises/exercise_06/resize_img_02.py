@@ -13,7 +13,7 @@ from PIL import Image
 iPhone_W = 640
 iPhone_H = 1136
 imgs = []
-out_root = './image_out_02'
+out_root = os.path.join(os.path.dirname(__file__),'image_out_02')
 re_img = re.compile(r'(.jpg|.png|.jpeg|.bmp)$')
 
 def resize_img(src_path, out_file):
@@ -41,7 +41,7 @@ def get_img(img_path):
                 img, postfix = os.path.splitext(file_in)
                 if (re_img.match(postfix.lower())):
                     out_file = os.path.join(out_root, 'iPhone_' + file)
-                    print(file_in + '===' + out_file)
+                    # print(file_in + '===' + out_file)
                     resize_img(file_in, out_file)
 
 get_img('./image')
