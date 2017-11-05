@@ -13,6 +13,7 @@ import numpy as np
 import os
 from matplotlib.font_manager import FontProperties
 import matplotlib.pyplot as plt
+from wordcloud import WordCloud
 
 file_path = os.path.join(os.path.dirname(__file__),'DataAnalyst.csv')
 df = pd.read_csv(file_path,encoding='gb2312')
@@ -166,13 +167,46 @@ tp2 = df_clean.groupby('city').positionName.apply(topN)
 bins = [0,3,5,10,15,20,30,100]
 level = ['0-3','3-5','5-10','10-15','15-20','20-30','30-100']
 df_clean['level'] = pd.cut(df_clean['avgSalary'],bins=bins,labels=level)
-print(df_clean[['avgSalary','level']])
+# print(df_clean[['avgSalary','level']])
 
 # 用lambda转换百分比，然后作堆积百分比柱形图(matplotlib好像没有直接调用的函数)。这里可以较为清晰的看到不同等级在不同地区的薪资占比。它比箱线图和直方图的好处在于，通过人工划分，具备业务含义。0～3是实习生的价位，3～6是刚毕业没有基础的新人，整理数据那种，6～10是有一定基础的，以此类推。
-df_level = df_clean.groupby(['city','level']).avgSalary.count().unstack()
-df_level_prop = df_level.apply(lambda x:x/x.sum(),axis=1)
-axs = df_level_prop.plot.bar(stacked=True,figsize=(14,6))
-font_change(axs)
+# df_level = df_clean.groupby(['city','level']).avgSalary.count().unstack()
+# print(df_level)
+# df_level_prop = df_level.apply(lambda x:x/x.sum(),axis=1)
+# axs = df_level_prop.plot.bar(stacked=True,figsize=(14,6))
+# font_change(axs)
+
+#
+# print(len(df_clean.positionLables))
+# print(type(df_clean.positionLables))
+# str方法允许我们针对列中的元素，进行字符串相关的处理，这里的[1:-1]不再是DataFrame和Series的切片，而是对字符串截取，这里把[]都截取掉了。如果漏了str，就变成选取Series第二行至最后一行的数据
+# 使用完str后，它返回的仍旧是Series，当我们想要再次用replace去除空格。还是需要添加str的。
+# print(df_clean.positionLables.str[1:-1].str.replace(' ',''))
+
+# 通过apply和value_counts函数统计标签数。因为各行元素已经转换成了列表，所以value_counts会逐行计算列表中的标签，apply的灵活性就在于此，它将value_counts应用在行上，最后将结果组成一张新表。
+word = df_clean.positionLables.str[1:-1].str.replace(' ','')
+df_word = word.dropna().str.split(',').apply(pd.value_counts)
+# print(df_word)
+# 用unstack完成行列转换，它是统计所有标签在各个职位的出现次数，绝大多数肯定是NaN。
+# print(df_word.unstack())
+
+# 将空值删除，并且重置为DataFrame，此时level_0为标签名，level_1为df_index的索引，也可以认为它对应着一个职位，0是该标签在职位中出现的次数，
+# print(df_word.unstack().dropna().reset_index())
 
 
+# groupby计算出标签出现的次数
+df_word_counts = df_word.unstack().dropna().reset_index().groupby('level_0').count()
+# print(df_word_counts)
+# print(df_word_counts.index)
+df_word_counts.index = df_word_counts.index.str.replace("'",'')
+wordcloud = WordCloud(font_path='C:\\WINDOWS\\Fonts\\simsun.ttc',
+                      width=900,height=400,background_color='white')
+
+# 在jupyter中显示图片，所以需要额外的配置figsize，不然wide和height的配置无效
+# f, axs = plt.subplots(figsize=(15,15))
+wordcloud.fit_words(df_word_counts.level_1)
+# axs = plt.imshow(wordcloud)
+plt.imshow(wordcloud)
+plt.axis('off')
+wordcloud.to_file(os.path.join(os.path.dirname(__file__),'ciyun.jpg'))
 plt.show()
