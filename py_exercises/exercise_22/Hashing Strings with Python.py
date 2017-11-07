@@ -96,3 +96,6 @@ print(hex_dig)
 
 # 更多关于安全密码的信息
 # https://crackstation.net/hashing-security.htm#attacks
+# http://zhuoqiang.me/password-storage-and-python-example.html
+# https://stackoverflow.com/questions/2572099/pythons-safest-method-to-store-and-retrieve-passwords-from-a-database
+# python密码学编程
