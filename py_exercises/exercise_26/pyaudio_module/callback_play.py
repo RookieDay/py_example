@@ -19,6 +19,7 @@ p = pyaudio.PyAudio()
 
 def callback(in_data, frame_count, time_info, status):
     data = wf.readframes(frame_count)
+    # print(data)
     return (data,pyaudio.paContinue)
 
 stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),

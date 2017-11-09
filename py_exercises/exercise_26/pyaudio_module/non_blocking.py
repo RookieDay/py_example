@@ -20,7 +20,7 @@ def callback(in_data, frame_count, time_info, status):
     return (in_data,pyaudio.paContinue)
 
 stream = p.open(format=p.get_format_from_width(WIDTH),
-                channels=CHANNELS,
+                channels=CHANNELS,  #声道数，单声道为1，双声道为2
                 rate=RATE,
                 input=True,
                 output=True,
