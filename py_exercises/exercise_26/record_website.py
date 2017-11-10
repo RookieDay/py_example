@@ -72,20 +72,29 @@ def get_file_content(out_wav):
         return f.read()
 
 def parse_txt(txt):
-    seg_list = jieba.lcut(txt)
-    if '百度' in seg_list:
+    content = (txt[0])[:-1].split('，')
+    # print(content)
+    if '百度' in content:
         webbrowser.open('www.baidu.com')
     else:
         return None
+    # seg_list = jieba.lcut(txt)
+    # if '百度' in seg_list:
+    #     webbrowser.open('www.baidu.com')
+    # else:
+    #     return None
 
 if __name__ == '__main__':
     record_save(out_wav)
-    # result = aipSpeech.asr(get_file_content(out_wav), 'wav', 16000, {'lan': 'zh',})
-    # print(result)
-    # while result['err_no'] != 0:
-    #     print('* recording please...')
-    #     record_save(out_wav)
-    # if 'result' in result:
-    #     txt = result['result']
-    #     print(txt)
-    parse_txt("我来到百度学习")
+    wav_content = aipSpeech.asr(get_file_content(out_wav), 'wav', 16000, {'lan': 'zh',})
+    print(wav_content)
+    while wav_content['err_no'] != 0:
+        print('* recording please...')
+        record_save(out_wav)
+        print(wav_content)
+        wav_content = aipSpeech.asr(get_file_content(out_wav), 'wav', 16000, {'lan': 'zh', })
+    if 'result' in wav_content:
+        txt = wav_content['result']
+        print(txt)
+    # txt = ['和，虎，火，呼呼，虎，嗯，火，黄，嘿嘿，']
+    # parse_txt(txt)
