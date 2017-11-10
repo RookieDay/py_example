@@ -28,9 +28,10 @@ import webbrowser
 from aip import AipSpeech
 
 """ 你的 APPID AK SK """
-APP_ID = '10342896'
-API_KEY = 'mj4uqWWkpTRj42jOF6VzE1GF'
-SECRET_KEY = 'xUTL9t8uqUQGDGUsRVtSAW4fhOpG2lwZ'
+# 这里大家申请下自己填一下即可
+APP_ID = '******'
+API_KEY = '******'
+SECRET_KEY = '******'
 aipSpeech = AipSpeech(APP_ID, API_KEY, SECRET_KEY)
 
 out_wav = os.path.join(os.path.dirname(__file__),'out_speech.wav')
