@@ -21,3 +21,10 @@
 
 # https://blog.ixxoo.me/argparse.html
 # argparse 模块 获取命令行参数
+
+actions = ['Up', 'Left', 'Down', 'Right', 'Restart', 'Exit']
+letter_codes = [ord(ch) for ch in 'WASDRQwasdrq']
+print(letter_codes)
+actions_dict = dict(zip(letter_codes, actions * 2))
+print(actions_dict)
+print( actions * 2)
