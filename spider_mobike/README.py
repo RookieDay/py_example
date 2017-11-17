@@ -12,6 +12,11 @@
 # 参考 xlzd的回答 强烈推荐
 # https://www.zhihu.com/question/53141781/answer/260874988?utm_medium=social&utm_source=wechat_session
 
+# 官网：http://anyproxy.io
+# 配置参考1 http://aiezu.com/article/windows_anyproxy_install.html
+# 配置参考2：https://www.cnblogs.com/yoable/p/6374134.html
+# 配置参考3：http://blog.csdn.net/lilongsy/article/details/74161851
+
 # 使用AnyProxy 手机代理进行抓包
 # 参考网址http://anyproxy.io/cn.html
 # 环境 python3.5 、win7 x64、iPhone、node
