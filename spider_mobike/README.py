@@ -16,6 +16,9 @@
 # 配置参考1 http://aiezu.com/article/windows_anyproxy_install.html
 # 配置参考2：https://www.cnblogs.com/yoable/p/6374134.html
 # 配置参考3：http://blog.csdn.net/lilongsy/article/details/74161851
+# request.png / response.png 查看效果截图
+# response_data.json 下载下来的部分json数据
+
 
 # 使用AnyProxy 手机代理进行抓包
 # 参考网址http://anyproxy.io/cn.html
