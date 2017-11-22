@@ -25,7 +25,7 @@ class ZhihuLoginByscrapy(CrawlSpider):
     ]
     rules = (
         Rule(LinkExtractor(allow=('/question/\d+#.*?', )),callback='parse_question',follow=True),
-        Rule(LinkExtractor(allow=('/question/\d+',)), callback='parse_question', follow=True),
+        Rule(LinkExtractor(allow=('/question/\d+', )), callback='parse_question', follow=True),
     )
     headers = {
         'Accept':'* / *',
@@ -33,8 +33,7 @@ class ZhihuLoginByscrapy(CrawlSpider):
         "Accept-Language": "zh-CN,zh;q=0.8",
         "Connection": "keep-alive",
         "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-        # 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36',
-        "Host": "www.zhihu.com",
+       "Host": "www.zhihu.com",
         "Referer": "https://www.zhihu.com/",
     }
     def start_requests(self):
@@ -45,14 +44,14 @@ class ZhihuLoginByscrapy(CrawlSpider):
         if _xsrf:
             formdata = {
                 '_xsrf': _xsrf,
-                'password': 'Gl1109318841',
+                'password': '****',
                 'remember_me': 'true',
-                'email': 'gl1109318841@163.com',
+                'email': '*****',
                 'captcha': ''
             }
             t = str(int(time.time() * 1000))
             captcha_url = 'http://www.zhihu.com/captcha.gif?r=' + t + "&type=login"
-            return [Request(captcha_url, headers=self.headers, meta={"cookiejar": 1, "formdata": formdata},
+            return [Request(captcha_url, headers=self.headers, meta={"cookiejar": response.meta['cookiejar'], "formdata": formdata},
                             callback=self.parse_captcha)]
 
     def parse_captcha(self, response):
@@ -65,7 +64,7 @@ class ZhihuLoginByscrapy(CrawlSpider):
         formdata = response.meta['formdata']
         formdata['captcha'] = captcha
         return [FormRequest("https://www.zhihu.com/login/email",
-                            meta={'cookiejar': 1},
+                            meta={'cookiejar': response.meta['cookiejar']},
                             method='POST',
                             headers=self.headers,
                             formdata=formdata,
@@ -74,8 +73,9 @@ class ZhihuLoginByscrapy(CrawlSpider):
                               )]
 
     def after_login(self,response):
+        print('bbb**'*30,response.text)
         for url in self.start_urls:
-            yield Request(url, headers=self.headers, meta={'cookiejar': 1}, dont_filter=True)
+            yield Request(url, headers=self.headers, meta={'cookiejar': response.meta['cookiejar']}, dont_filter=True)
 
     def parse_question(self, response):
         self.logger.info('Hi, this is an item page! %s', response.url)
@@ -84,6 +84,6 @@ class ZhihuLoginByscrapy(CrawlSpider):
         item.add_css('title','h1.QuestionHeader-title::text')
         item.add_xpath('read', '(//div[@class="NumberBoard-value"])[1]/text()')
         item.add_xpath('focus', '(//div[@class="NumberBoard-value"])[2]/text()')
-        item.add_xpath('description', '(//span[@class="RichText CopyrightRichText-richText"])/text()')
+        item.add_xpath('description', '//span[@class="RichText CopyrightRichText-richText"]/text()')
         print(item)
         return item.load_item()

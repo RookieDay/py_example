@@ -10,7 +10,9 @@ from scrapy.loader.processors import TakeFirst,MapCompose,Join
 
 class ZhihuLoginByscrapyItem(scrapy.Item):
     # define the fields for your item here like:
-    url = scrapy.Field()  # 问题url
+    url = scrapy.Field(
+        output_processor=Join(),
+    )  # 问题url
     title = scrapy.Field(
         output_processor=Join(),
     ) # 问题标题

@@ -28,18 +28,6 @@ class ZhihuLoginByscrapyPipeline(object):
 
 class MongoByscrapyPipeline(object):
 
-    # 自定义pipeline存储数据
-    # def open_spider(self, spider):
-    #     self.file = open('ana_items.jl', 'w')
-    #
-    # def close_spider(self, spider):
-    #     self.file.close()
-    #
-    # def process_item(self, item, spider):
-    #     line = json.dumps(dict(item)) + "\n"
-    #     self.file.write(line)
-    #     return item
-
     def __init__(self, mongo_uri, mongo_db,mongo_col):
         self.mongo_uri = mongo_uri
         self.mongo_db = mongo_db
