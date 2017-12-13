@@ -1,0 +1,1 @@
+@"d:\front_end\py_example\tf_1.2_deeplerning\tf12fix_deepai\scripts\python.exe" "d:\front_end\py_example\tf_1.2_deeplerning\tf12fix_deepai\Scripts\markdown_py" %*
